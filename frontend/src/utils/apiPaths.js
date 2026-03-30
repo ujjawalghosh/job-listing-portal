@@ -6,7 +6,7 @@ const defaultProdApiBaseUrl = "https://job-portal-8l1g.vercel.app";
 // 2) production fallback backend URL (separate frontend/backend deployments)
 // 3) local backend URL in development
 export const BASE_URL =
-  envBaseUrl || (import.meta.env.PROD ? defaultProdApiBaseUrl : "http://localhost:3000");
+"http://127.0.0.1:5000"
 
 export const API_PATHS = {
     AUTH: {

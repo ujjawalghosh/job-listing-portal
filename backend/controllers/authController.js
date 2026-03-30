@@ -12,7 +12,7 @@ exports.register = async (req, res) => {
   try {
     const { name, email, password, avatar, role } = req.body;
 
-  const userExists = await User.findOne({ email });
+    const userExists = await User.findOne({ email });
   if (userExists)
     return res.status(400).json({ message: "User already exists" });
 
@@ -37,8 +37,22 @@ exports.register = async (req, res) => {
     resume: user.resume || "",
   });
 } catch (err) {
-  res.status(500).json({ message: err.message });
+  console.error('Registration error:', err);
+
+  if (err.name === 'ValidationError') {
+    const messages = Object.values(err.errors).map(val => val.message).join(', ');
+    return res.status(422).json({ 
+      message: 'Validation error', 
+      errors: messages 
+    });
   }
+
+  if (err.code === 11000) {
+    return res.status(409).json({ message: 'Email already registered' });
+  }
+
+  res.status(500).json({ message: err.message });
+}
 };
 
 // @desc Login user
@@ -51,18 +65,18 @@ exports.login = async (req, res) => {
         return res.status(401).json({ message: "Invalid email or password" });
     }
 
-    res.json({
-        _id: user._id,
-        name: user.name,
-        email: user.email,
-        role: user.role,
-        token: generateToken(user._id),
-        avatar: user.avatar || "",
-        companyName: user.companyName || "",
-        companyDescription: user.companyDescription || "",
-        companyLogo: user.companyLogo || "",
-        resume: user.resume || "",
-    });
+        res.json({
+            _id: user._id,
+            name: user.name,
+            email: user.email,
+            role: user.role,
+            token: generateToken(user._id),
+            avatar: user.avatar || "",
+            companyName: user.companyName || "",
+            companyDescription: user.companyDescription || "",
+            companyLogo: user.companyLogo || "",
+            resume: user.resume || "",
+        });
 
 } catch (err) {
     res.status(500).json({ message: err.message });

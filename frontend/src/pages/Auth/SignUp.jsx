@@ -161,9 +161,9 @@ const SignUp = () => {
         ...prev,
         loading: false,
         errors: {
-          submit:
-            error.response?.data?.message ||
-            "Registration failed. Please try again.",
+          submit: error.response 
+            ? `Error ${error.response.status}: ${error.response.data?.message || 'Server error'}`
+            : `Network error: ${error.message || 'Check backend server'}.`,
         },
       }));
     }

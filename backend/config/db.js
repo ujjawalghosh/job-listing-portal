@@ -10,13 +10,14 @@ const connectDB = async () => {
 
   if (!cachedPromise) {
     cachedPromise = mongoose
-      .connect(process.env.MONGO_URI, {})
+      .connect(process.env.MONGO_URL, {})
       .then((mongooseInstance) => {
         cachedConnection = mongooseInstance.connection;
         console.log("MongoDB connected");
         return cachedConnection;
       })
-      .catch((err) => {
+    .catch((err) => {
+        console.error('MongoDB connection failed:', err);
         cachedPromise = null;   
         throw err;
       });
