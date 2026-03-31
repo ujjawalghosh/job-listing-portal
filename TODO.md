@@ -1,16 +1,46 @@
-# Job Portal Auth Fix Progress
+# Job Portal Deployment Fix - Login Issue
 
-## Completed ✅
-- [x] Backend server port binding diagnosis
-- [x] API connectivity verified (curl works)
-- [x] JWT_SECRET casing mismatch identified
-- [x] Ready to edit authController.js
+## Status: 🔄 In Progress
 
-## Pending 🔄
-- [ ] Edit backend/controllers/authController.js (`Jwt_Secret` → `JWT_SECRET`)
-- [ ] Restart backend server
-- [ ] Test signup → auto-login
-- [ ] Test login with credentials
-- [ ] Verify no more errors
+## Steps Completed:\n- [x] Diagnosed issue: Frontend uses localhost API in production\n- [x] Fixed frontend API base URL logic\n- [x] Code changes committed & ready to deploy
 
-**Next step**: Edit authController.js
+## Remaining Steps:
+
+### 1. **Set Vercel Environment Variable** (Frontend)
+```
+Project Settings > Environment Variables > Add:
+Name: VITE_API_BASE_URL
+Value: https://job-listing-portal-axw0.onrender.com
+```
+- Add to **Production** environment
+- **Redeploy** frontend (or push to trigger)
+
+### 2. **Set Render Environment Variable** (Backend)
+```
+Dashboard > Your Service > Environment > Add:
+Key: PUBLIC_BACKEND_URL
+Value: https://job-listing-portal-axw0.onrender.com
+```
+- Save → triggers redeploy
+
+### 3. **Test Login**
+- Visit Vercel frontend URL
+- Try login → check Network tab (F12): API calls to Render URL?
+- Success: Returns token, redirects to dashboard
+
+### 4. **Verify Image Uploads**
+- Profile upload → image loads from Render /uploads/
+
+### 5. **Monitor Logs**
+```
+Render: Logs tab for backend errors
+Vercel: Functions logs for frontend
+```
+
+## After Completion
+```
+npm run build && vercel deploy  # Frontend (optional)
+```
+**Expected Result**: Login works across deploys! 🚀
+
+**Current Progress**: [Update after each step]

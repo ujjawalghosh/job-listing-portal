@@ -1,12 +1,11 @@
 const envBaseUrl = import.meta.env.VITE_API_BASE_URL?.trim();
-const defaultProdApiBaseUrl = "https://job-portal-8l1g.vercel.app";
+const defaultProdApiBaseUrl = "https://job-listing-portal-axw0.onrender.com";
 
 // Priority:
 // 1) explicit env var
 // 2) production fallback backend URL (separate frontend/backend deployments)
 // 3) local backend URL in development
-export const BASE_URL =
-"http://127.0.0.1:5000"
+export const BASE_URL = envBaseUrl || (import.meta.env.DEV ? "http://127.0.0.1:5000" : defaultProdApiBaseUrl);
 
 export const API_PATHS = {
     AUTH: {
